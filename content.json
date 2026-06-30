@@ -1,0 +1,110 @@
+{
+  "site": {
+    "title": "Studio Isora, a Cinematic Creative Studio",
+    "description": "Studio Isora: an AI enhanced boutique creative studio crafting cinematic visual experiences.",
+    "ogImage": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80"
+  },
+  "homepage": {
+    "navigation": {
+      "brand": {
+        "mark": "◣",
+        "namePrimary": "STUDIO",
+        "nameAccent": "ISORA",
+        "ariaLabel": "Studio Isora — home"
+      },
+      "links": [
+        { "href": "#home", "label": "HOME", "showBullet": true },
+        { "href": "#about", "label": "ABOUT US", "showBullet": false },
+        { "href": "#portfolio", "label": "PORTFOLIO", "showBullet": false },
+        { "href": "#subscription", "label": "SUBSCRIPTION", "showBullet": false },
+        { "href": "#services", "label": "SERVICES", "showBullet": false },
+        { "href": "#contact", "label": "CONTACT", "showBullet": false }
+      ]
+    },
+    "hero": {
+      "videoSrc": "./assets/Ground_explosions_chasing_camera_202606301751.mp4",
+      "media": {
+        "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=2000&q=80"
+      },
+      "tagline": "BOUTIQUE VISUAL EFFECTS STUDIO",
+      "credits": {
+        "label": "FEATURED WORK",
+        "featured": {
+          "title": "Northern Lights",
+          "subtitle": "Feature film · 2026"
+        }
+      }
+    },
+    "about": {
+      "eyebrow": "About Studio Isora",
+      "title": "An AI enhanced platform for visual effects and creative production.",
+      "bodyText": "Studio Isora is a cost effective hybrid tool blending the power of AI with the traditional live action production workdflow for early-career professionals, emerging directors, designers, and visual effects artists."
+    },
+    "portfolio": {
+      "eyebrow": "Selected Work",
+      "title": "Portfolio",
+      "items": [
+        {
+          "tag": "VFX · Color",
+          "title": "Northern Lights",
+          "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "tag": "Direction",
+          "title": "Quiet Hours",
+          "image": "https://images.unsplash.com/photo-1518929458119-e5bf444c30f4?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "tag": "Brand Film",
+          "title": "Atelier — SS26",
+          "image": "https://images.unsplash.com/photo-1500920429664-1c7e26469ce9?auto=format&fit=crop&w=1200&q=80"
+        },
+        {
+          "tag": "CG · Compositing",
+          "title": "Vessel",
+          "image": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80"
+        }
+      ]
+    },
+    "services": {
+      "eyebrow": "Capabilities",
+      "title": "Services",
+      "items": [
+        {
+          "number": "01",
+          "title": "Visual Effects",
+          "description": "Concept through final composite, on shows of any scale."
+        },
+        {
+          "number": "02",
+          "title": "Direction & Production",
+          "description": "End-to-end production for brand films and short-form."
+        },
+        {
+          "number": "03",
+          "title": "Color & Finishing",
+          "description": "Grading, online, and delivery in a calibrated suite."
+        },
+        {
+          "number": "04",
+          "title": "Design & Motion",
+          "description": "Title sequences, graphics packages, and brand systems."
+        }
+      ]
+    },
+    "subscription": {
+      "eyebrow": "Subscription",
+      "title": "Try it out for yourself",
+      "bodyHtml": " Subscribe to our platform and get access to our tools and resources. \n <a href=\"mailto:subscription@studioisora.com\">subscription@studioisora.com</a>."
+    },
+    "contact": {
+      "eyebrow": "Get in touch",
+      "title": "Let's make something.",
+      "email": "hello@studioisora.com",
+      "emailHref": "mailto:hello@studioisora.com",
+      "studioName": "Studio Isora",
+      "addressHtml": "522 W Riverside Ave Ste N<br />Spokane, WA 99201",
+      "copyright": "Studio Isora. All rights reserved."
+    }
+  }
+}

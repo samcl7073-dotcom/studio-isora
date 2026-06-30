@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Studio Isora — a boutique creative studio crafting cinematic visual experiences."
+  />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#050505" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Studio Isora" />
+  <meta property="og:title" content="Studio Isora — Cinematic Creative Studio" />
+  <meta
+    property="og:description"
+    content="Studio Isora — a boutique creative studio crafting cinematic visual experiences."
+  />
+  <meta
+    property="og:image"
+    content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80"
+  />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Studio Isora — Cinematic Creative Studio" />
+  <meta
+    name="twitter:description"
+    content="Studio Isora — a boutique creative studio crafting cinematic visual experiences."
+  />
+  <meta
+    name="twitter:image"
+    content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80"
+  />
+
+  <title>Studio Isora — Cinematic Creative Studio</title>
+
+  <link rel="preload" href="content.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- =========== HERO =========== -->
+  <header class="hero" id="home">
+    <video
+      class="hero__video-bg"
+      autoplay
+      loop
+      muted
+      playsinline
+      aria-hidden="true"
+      data-content-attr="src:homepage.hero.videoSrc,poster:homepage.hero.media.poster"
+    ></video>
+    <div class="hero__overlay" aria-hidden="true"></div>
+
+    <nav class="nav" aria-label="Primary">
+      <a href="#home" class="brand" data-content-attr="aria-label:homepage.navigation.brand.ariaLabel">
+        <span class="brand__mark" data-content="homepage.navigation.brand.mark"></span>
+        <span class="brand__name">
+          <span data-content="homepage.navigation.brand.namePrimary"></span><span class="brand__accent" data-content="homepage.navigation.brand.nameAccent"></span>
+        </span>
+      </a>
+
+      <ul
+        class="nav__list"
+        id="navList"
+        data-content-list="homepage.navigation.links"
+        data-content-template="tpl-nav-link"
+      ></ul>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="hero__content">
+      <h1 class="hero__tagline" data-content="homepage.hero.tagline"></h1>
+    </div>
+
+    <div class="hero__credits">
+      <div class="credits__inner">
+        <span class="credits__label" data-content="homepage.hero.credits.label"></span>
+        <div class="credits__card">
+          <div class="credits__thumb" aria-hidden="true"></div>
+          <div class="credits__text">
+            <span class="credits__title" data-content="homepage.hero.credits.featured.title"></span>
+            <span class="credits__sub" data-content="homepage.hero.credits.featured.subtitle"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div id="content-error" class="content-error" hidden role="alert">
+      <p>Unable to load site content. Please refresh the page or try again later.</p>
+    </div>
+
+    <!-- =========== ABOUT =========== -->
+    <section class="section section--dark" id="about">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow" data-content="homepage.about.eyebrow"></p>
+          <h2 class="section__title" data-content="homepage.about.title"></h2>
+        </div>
+        <p class="section__lede" data-content="homepage.about.bodyText"></p>
+      </div>
+    </section>
+
+    <!-- =========== PORTFOLIO =========== -->
+    <section class="section" id="portfolio">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow" data-content="homepage.portfolio.eyebrow"></p>
+          <h2 class="section__title" data-content="homepage.portfolio.title"></h2>
+        </div>
+        <div
+          class="portfolio"
+          data-content-list="homepage.portfolio.items"
+          data-content-template="tpl-portfolio-card"
+        ></div>
+      </div>
+    </section>
+
+    <!-- =========== SERVICES =========== -->
+    <section class="section section--dark" id="services">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow" data-content="homepage.services.eyebrow"></p>
+          <h2 class="section__title" data-content="homepage.services.title"></h2>
+        </div>
+        <ul
+          class="services"
+          data-content-list="homepage.services.items"
+          data-content-template="tpl-service-item"
+        ></ul>
+      </div>
+    </section>
+
+    <!-- =========== SUBSCRIPTION =========== -->
+    <section class="section" id="subscription">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow" data-content="homepage.subscription.eyebrow"></p>
+          <h2 class="section__title" data-content="homepage.subscription.title"></h2>
+        </div>
+        <p class="section__lede" data-content-html="homepage.subscription.bodyHtml"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========== CONTACT =========== -->
+  <footer class="section section--dark footer" id="contact">
+    <div class="container footer__grid">
+      <div>
+        <p class="eyebrow" data-content="homepage.contact.eyebrow"></p>
+        <h2 class="section__title" data-content="homepage.contact.title"></h2>
+        <a
+          class="mailto"
+          data-content="homepage.contact.email"
+          data-content-attr="href:homepage.contact.emailHref"
+        ></a>
+      </div>
+      <div class="footer__meta">
+        <p data-content="homepage.contact.studioName"></p>
+        <p data-content-html="homepage.contact.addressHtml"></p>
+        <p class="muted">&copy; <span id="year"></span> <span data-content="homepage.contact.copyright"></span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Content list templates -->
+  <template id="tpl-nav-link">
+    <li>
+      <a class="nav__link" data-content-item-attr="href:href">
+        <span class="nav__bullet" data-content-item-if="showBullet"></span>
+        <span data-content-item="label"></span>
+      </a>
+    </li>
+  </template>
+
+  <template id="tpl-portfolio-card">
+    <article class="card">
+      <div class="card__media" data-content-item-style="image"></div>
+      <div class="card__body">
+        <span class="card__tag" data-content-item="tag"></span>
+        <h3 class="card__title" data-content-item="title"></h3>
+      </div>
+    </article>
+  </template>
+
+  <template id="tpl-service-item">
+    <li>
+      <span data-content-item="number"></span>
+      <h3 data-content-item="title"></h3>
+      <p data-content-item="description"></p>
+    </li>
+  </template>
+
+  <script src="content.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

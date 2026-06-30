@@ -1,0 +1,9 @@
+# Build output (regenerate with: python3 build.py)
+dist/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
