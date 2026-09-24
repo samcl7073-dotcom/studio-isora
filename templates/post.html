@@ -1,0 +1,19 @@
+  <main id="main" class="page">
+    <article class="section post">
+      <div class="container container--narrow">
+        <a class="link-arrow post__back" href="/blog/">&larr; All posts</a>
+        <header class="post__header">
+          <time class="eyebrow" datetime="$post_iso">$post_date</time>
+          <h1 class="post__title">$post_title</h1>
+        </header>
+        <div class="prose">
+$post_html
+        </div>
+        <aside class="post__cta">
+          <p>Planning a hybrid production?</p>
+          <a class="btn btn--primary" href="$book_href"$book_target>Book a consultation</a>
+        </aside>
+        <nav class="pager" aria-label="More posts">$pager</nav>
+      </div>
+    </article>
+  </main>

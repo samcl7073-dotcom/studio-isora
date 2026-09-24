@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Studio Isora</title>
+  <meta name="description" content="Tests, decisions and findings from building our hybrid production workflow, written up as we go." />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Studio Isora" />
+  <meta property="og:title" content="Blog — Studio Isora" />
+  <meta property="og:description" content="Tests, decisions and findings from building our hybrid production workflow, written up as we go." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="inner">
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="brand" aria-label="Studio Isora — home">
+      <span class="brand__mark">◣</span>
+      <span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span>
+    </a>
+    <ul class="nav__list" id="navList">
+<li><a class="nav__link" href="/#services">SERVICES</a></li>
+<li><a class="nav__link" href="/#pipeline">PIPELINE</a></li>
+<li><a class="nav__link" href="/#watch">WATCH</a></li>
+<li><a class="nav__link" href="/blog/">BLOG</a></li>
+<li><a class="nav__link" href="/#book">BOOK A CALL</a></li>
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main id="main" class="page">
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Development blog</p>
+          <h1 class="section__title">How the pipeline gets built.</h1>
+          <p class="section__lede">Tests, decisions and findings from building our hybrid production workflow, written up as we go.</p>
+        </div>
+        <div class="post-list">
+<article class="post-card">
+  <a href="/blog/test-00-scan-to-keyframe/">
+    <time datetime="2026-09-23">September 23, 2026</time>
+    <h3>Test 00: from a rough scan to a usable keyframe</h3>
+    <p>Our first bench test took a phone scan of a bedroom, framed shots in it, and restored those renders into photographic keyframes on a laptop. Reference photos cut the hallucinations, with one important catch.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+<article class="post-card">
+  <a href="/blog/capture-the-real-location/">
+    <time datetime="2026-09-22">September 22, 2026</time>
+    <h3>Capture the real location</h3>
+    <p>We tried to source locations from splat libraries and stock drone footage. None of it matched the storyboard. So our pipeline now starts with planning our own capture.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+<article class="post-card">
+  <a href="/blog/why-our-pipeline-runs-locally/">
+    <time datetime="2026-09-16">September 16, 2026</time>
+    <h3>Why our pipeline runs locally</h3>
+    <p>The first design for our production tools was a cloud platform. We threw it out on day one. Here&#x27;s why a local-first pipeline is the right shape for hybrid filmmaking.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="/" class="brand"><span class="brand__mark">◣</span><span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span></a>
+        <p class="muted footer__tag">Hybrid live-action and AI production studio for independent filmmakers.</p>
+      </div>
+      <div class="footer__meta">
+        <a class="footer__mail" href="mailto:info@studioisora.com">info@studioisora.com</a>
+        <p class="muted">&copy; 2026 Isora LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

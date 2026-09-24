@@ -1,88 +1,45 @@
-// Studio Isora — UI interactions for the landing template.
-
+// Studio Isora — nav menu and active-section highlight.
 (function () {
   const nav = document.querySelector(".nav");
   const toggle = document.getElementById("navToggle");
-  const navList = document.getElementById("navList");
-  let sectionObserver = null;
+  const list = document.getElementById("navList");
 
-  function setFooterYear() {
-    const year = document.getElementById("year");
-    if (year) year.textContent = new Date().getFullYear();
+  function setOpen(open) {
+    nav.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   }
 
-  function bindNavToggle() {
-    if (!toggle || !nav || toggle.dataset.bound === "true") return;
-    toggle.dataset.bound = "true";
+  if (nav && toggle && list) {
+    toggle.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
+    list.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
+  }
 
-    toggle.addEventListener("click", () => {
-      const open = nav.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  // Solid nav once the hero is scrolled past (home page only).
+  if (document.body.classList.contains("home") && nav) {
+    const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // Highlight the nav link for the section in view (home) or for the blog.
+  const links = Array.from(document.querySelectorAll(".nav__link"));
+  if (location.pathname.startsWith("/blog")) {
+    links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === "/blog/"));
+  } else if ("IntersectionObserver" in window) {
+    const byId = new Map();
+    links.forEach((l) => {
+      const m = l.getAttribute("href").match(/#(.+)$/);
+      const s = m && document.getElementById(m[1]);
+      if (s) byId.set(s, l);
     });
-  }
-
-  function bindNavListClose() {
-    if (!navList || !nav || navList.dataset.bound === "true") return;
-    navList.dataset.bound = "true";
-
-    navList.addEventListener("click", (e) => {
-      if (e.target.matches("a") && nav.classList.contains("is-open")) {
-        nav.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Open menu");
-      }
-    });
-  }
-
-  function bindActiveSectionObserver() {
-    if (sectionObserver) sectionObserver.disconnect();
-
-    const links = Array.from(document.querySelectorAll(".nav__link"));
-    const sections = links
-      .map((a) => document.querySelector(a.getAttribute("href")))
-      .filter(Boolean);
-
-    if (!("IntersectionObserver" in window) || !sections.length) return;
-
-    sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = "#" + entry.target.id;
-            links.forEach((l) => l.classList.toggle("is-active", l.getAttribute("href") === id));
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((en) => {
+        if (en.isIntersecting) links.forEach((l) => l.classList.toggle("is-active", l === byId.get(en.target)));
+      }),
+      { rootMargin: "-45% 0px -50% 0px" }
     );
-
-    sections.forEach((s) => sectionObserver.observe(s));
+    byId.forEach((_, s) => io.observe(s));
   }
 
-  function initInteractions() {
-    bindNavToggle();
-    bindNavListClose();
-    bindActiveSectionObserver();
-    setFooterYear();
-  }
-
-  async function boot() {
-    if (window.Content) {
-      try {
-        await window.Content.init({ interval: 2000 });
-        window.Content.onUpdate(() => initInteractions());
-      } catch {
-        return;
-      }
-    }
-
-    initInteractions();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-  } else {
-    boot();
-  }
 })();

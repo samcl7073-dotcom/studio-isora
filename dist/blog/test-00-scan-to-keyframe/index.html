@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test 00: from a rough scan to a usable keyframe — Studio Isora</title>
+  <meta name="description" content="Our first bench test took a phone scan of a bedroom, framed shots in it, and restored those renders into photographic keyframes on a laptop. Reference photos cut the hallucinations, with one important catch." />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Studio Isora" />
+  <meta property="og:title" content="Test 00: from a rough scan to a usable keyframe — Studio Isora" />
+  <meta property="og:description" content="Our first bench test took a phone scan of a bedroom, framed shots in it, and restored those renders into photographic keyframes on a laptop. Reference photos cut the hallucinations, with one important catch." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="inner">
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="brand" aria-label="Studio Isora — home">
+      <span class="brand__mark">◣</span>
+      <span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span>
+    </a>
+    <ul class="nav__list" id="navList">
+<li><a class="nav__link" href="/#services">SERVICES</a></li>
+<li><a class="nav__link" href="/#pipeline">PIPELINE</a></li>
+<li><a class="nav__link" href="/#watch">WATCH</a></li>
+<li><a class="nav__link" href="/blog/">BLOG</a></li>
+<li><a class="nav__link" href="/#book">BOOK A CALL</a></li>
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main id="main" class="page">
+    <article class="section post">
+      <div class="container container--narrow">
+        <a class="link-arrow post__back" href="/blog/">&larr; All posts</a>
+        <header class="post__header">
+          <time class="eyebrow" datetime="2026-09-23">September 23, 2026</time>
+          <h1 class="post__title">Test 00: from a rough scan to a usable keyframe</h1>
+        </header>
+        <div class="prose">
+<p>Before shooting anything outdoors, we ran the whole idea on the smallest possible set: a bedroom, scanned with a phone as a Gaussian splat, plus a handful of ordinary photos of the room.</p>
+<h3>Framing shots inside the scan</h3>
+<p>A splat lets you put a virtual camera anywhere in the captured space. We framed several angles for a short three-scene test script, including a wide establishing shot, a medium profile beside the window, and a low angle across the bed. The scan made it obvious which angles were usable: where the capture was thin, like a corner by the door, the render fell apart, and those angles were dropped before any generation happened.</p>
+<p>Raw splat renders look like what they are, smeared and soft, with blotchy detail. Not something you could cut into a film.</p>
+<h3>Restoring the frame</h3>
+<p>Each render then went through a local image model (FLUX.2 [klein] 4B, running on a 16 GB MacBook) with an instruction to restore it into a photograph without changing the camera or the layout. We ran every angle twice: once with reference photos of the real room, once without.</p>
+<p>The results were clear:</p>
+<ul>
+<li><strong>The camera held.</strong> The restored images kept the render's viewpoint and layout, and the smeared duvet, blinds and furniture came back looking photographic.</li>
+<li><strong>Reference photos cut the invention.</strong> With the real photos, the shelf above the bed came back with the actual objects on it, and the window showed the real blinds and the real tree outside. Without them, the model made things up: a potted plant, an alarm clock, blinds that weren't there.</li>
+<li><strong>Photos can't fix what nobody photographed.</strong> Where no reference covered a region, both versions guessed. A half-captured stool in the corner turned into a folding table.</li>
+</ul>
+<h3>The catch: wide photos hijack the camera</h3>
+<p>On two of the angles, adding the reference photos made things worse. The model stopped following the render and reproduced the <em>photo's</em> camera instead: the output was simply the reference shot again. It doesn't distinguish "use this for structure" from "use this for texture"; the image with the strongest composition wins.</p>
+<p>The fix is to give the model close-up crops of materials that carry no room geometry: the duvet pattern, the blind slats, the wood grain. So our capture plans now ask for detail photos as their own shot type, not just wide plates of the location.</p>
+<h3>What's next</h3>
+<p>Next up is re-running these angles with material crops, then taking the restored keyframes into video generation, and repeating the whole test outdoors, on a real location, in real light.</p>
+        </div>
+        <aside class="post__cta">
+          <p>Planning a hybrid production?</p>
+          <a class="btn btn--primary" href="mailto:info@studioisora.com?subject=Consultation%20request">Book a consultation</a>
+        </aside>
+        <nav class="pager" aria-label="More posts"><a class="pager__older" href="/blog/capture-the-real-location/">&larr; Capture the real location</a><span></span></nav>
+      </div>
+    </article>
+  </main>
+
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="/" class="brand"><span class="brand__mark">◣</span><span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span></a>
+        <p class="muted footer__tag">Hybrid live-action and AI production studio for independent filmmakers.</p>
+      </div>
+      <div class="footer__meta">
+        <a class="footer__mail" href="mailto:info@studioisora.com">info@studioisora.com</a>
+        <p class="muted">&copy; 2026 Isora LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

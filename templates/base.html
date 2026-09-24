@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>$title</title>
+  <meta name="description" content="$description" />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="$site_name" />
+  <meta property="og:title" content="$title" />
+  <meta property="og:description" content="$description" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="$body_class">
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="brand" aria-label="Studio Isora — home">
+      <span class="brand__mark">◣</span>
+      <span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span>
+    </a>
+    <ul class="nav__list" id="navList">
+$nav
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+$body
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="/" class="brand"><span class="brand__mark">◣</span><span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span></a>
+        <p class="muted footer__tag">Hybrid live-action and AI production studio for independent filmmakers.</p>
+      </div>
+      <div class="footer__meta">
+        <a class="footer__mail" href="$email_href">$email</a>
+        <p class="muted">&copy; $year $copyright</p>
+      </div>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

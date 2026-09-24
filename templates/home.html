@@ -1,0 +1,91 @@
+  <header class="hero" id="home">
+    <video class="hero__video-bg" autoplay loop muted playsinline aria-hidden="true" src="$hero_video"></video>
+    <div class="hero__overlay" aria-hidden="true"></div>
+    <div class="hero__content container">
+      <p class="eyebrow">$hero_eyebrow</p>
+      <h1 class="hero__title">$hero_title</h1>
+      <p class="hero__lede">$hero_lede</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="$book_href"$book_target>$hero_primary</a>
+        <a class="btn btn--ghost" href="/blog/">$hero_secondary</a>
+      </div>
+    </div>
+    <div class="status-bar">$status</div>
+  </header>
+
+  <main id="main">
+    <section class="section section--dark" id="services">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">$services_eyebrow</p>
+          <h2 class="section__title">$services_title</h2>
+          <p class="section__lede">$services_lede</p>
+        </div>
+        <ol class="steps">
+$services_items
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="pipeline">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow">$pipeline_eyebrow</p>
+          <h2 class="section__title">$pipeline_title</h2>
+        </div>
+        <ul class="principles">
+$pipeline_items
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="tools">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow">$tools_eyebrow</p>
+          <h2 class="section__title">$tools_title</h2>
+        </div>
+        <div class="stack">
+$tools_paragraphs
+          <div><a class="btn btn--ghost" href="$rollout_href"$book_target>$tools_cta</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="watch">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">$watch_eyebrow</p>
+          <h2 class="section__title">$watch_title</h2>
+        </div>
+$watch_body
+      </div>
+    </section>
+
+    <section class="section section--dark" id="blog">
+      <div class="container">
+        <div class="section__head section__head--row">
+          <div>
+            <p class="eyebrow">$blog_eyebrow</p>
+            <h2 class="section__title">$blog_title</h2>
+          </div>
+          <a class="link-arrow" href="/blog/">All posts &rarr;</a>
+        </div>
+        <div class="post-grid">
+$blog_cards
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta" id="book">
+      <div class="container cta__inner">
+        <p class="eyebrow">$book_eyebrow</p>
+        <h2 class="section__title">$book_title</h2>
+        <p class="section__lede">$book_text</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="$book_href"$book_target>$hero_primary</a>
+          <a class="mailto" href="$email_href">$email</a>
+        </div>
+      </div>
+    </section>
+  </main>

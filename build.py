@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 """
-Pre-render Studio Isora for production.
+Build the Studio Isora website into dist/.
 
-Reads index.html + content.json, applies all data bindings statically,
-and outputs a fully populated dist/ directory ready to deploy.
-
-Usage:
     python3 build.py
+
+Inputs (edit these, then rebuild):
+    content.json    all text on the home page, nav, contact email
+    posts/*.md      blog posts (front matter: title, date, summary)
+    videos.json     YouTube videos for the 'Watch the process' section
+    templates/      page layouts
+    styles.css, script.js, assets/   copied as-is
+
+Output:
+    dist/index.html, dist/blog/index.html, dist/blog/<slug>/index.html,
+    dist/styles.css, dist/script.js, dist/assets/...
+
+No third-party packages needed: plain Python 3.
 """
 
 from __future__ import annotations
@@ -14,322 +23,366 @@ from __future__ import annotations
 import json
 import re
 import shutil
+from datetime import date
 from html import escape
 from pathlib import Path
+from string import Template
+from urllib.parse import quote, urlparse, parse_qs
 
 ROOT = Path(__file__).resolve().parent
 DIST = ROOT / "dist"
-SOURCE_HTML = ROOT / "index.html"
-SOURCE_CONTENT = ROOT / "content.json"
+TEMPLATES = ROOT / "templates"
+POSTS = ROOT / "posts"
+STATIC_FILES = ["styles.css", "script.js"]
+STATIC_DIRS = ["assets"]
 
 
-def get_by_path(data: dict, path: str):
-    current = data
-    for key in path.split("."):
-        if not isinstance(current, dict) or key not in current:
-            return None
-        current = current[key]
-    return current
+# ---------------------------------------------------------------- markdown --
+
+def inline_md(text: str) -> str:
+    """Escape, then apply inline markdown: code, links, bold, italic."""
+    codes: list[str] = []
+
+    def stash(m):
+        codes.append(f"<code>{escape(m.group(1))}</code>")
+        return f"\x00{len(codes) - 1}\x00"
+
+    text = re.sub(r"`([^`]+)`", stash, text)
+    text = escape(text, quote=False)
+    text = re.sub(
+        r"\[([^\]]+)\]\(([^)\s]+)\)",
+        lambda m: f'<a href="{escape(m.group(2))}">{m.group(1)}</a>',
+        text,
+    )
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    text = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", text)
+    text = re.sub(r"\x00(\d+)\x00", lambda m: codes[int(m.group(1))], text)
+    return text
 
 
-def strip_binding_attrs(html: str) -> str:
-    return re.sub(r'\sdata-content(?:-[a-z-]+)?="[^"]*"', "", html)
+def markdown_to_html(md: str) -> str:
+    """Small markdown subset: headings, paragraphs, lists, quotes, rules, images, code blocks."""
+    lines = md.replace("\r\n", "\n").split("\n")
+    out: list[str] = []
+    para: list[str] = []
+    list_type: str | None = None
+    in_code = False
+    code: list[str] = []
 
+    def flush_para():
+        nonlocal para
+        if para:
+            out.append(f"<p>{inline_md(' '.join(para))}</p>")
+            para = []
 
-def apply_content_attr(spec: str, attrs: str, data: dict) -> str:
-    for pair in spec.split(","):
-        colon = pair.find(":")
-        if colon == -1:
+    def close_list():
+        nonlocal list_type
+        if list_type:
+            out.append(f"</{list_type}>")
+            list_type = None
+
+    for line in lines:
+        if in_code:
+            if line.strip().startswith("```"):
+                out.append(f"<pre><code>{escape(chr(10).join(code))}</code></pre>")
+                code, in_code = [], False
+            else:
+                code.append(line)
             continue
-        attr_name = pair[:colon].strip()
-        path = pair[colon + 1 :].strip()
-        value = get_by_path(data, path)
-        if value is None:
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            flush_para(); close_list(); in_code = True
             continue
-        attrs = re.sub(rf'\s{re.escape(attr_name)}="[^"]*"', "", attrs)
-        attrs += f' {attr_name}="{escape(str(value), quote=True)}"'
-    return attrs
+        if not stripped:
+            flush_para(); close_list()
+            continue
+        m = re.match(r"^(#{1,4})\s+(.*)$", stripped)
+        if m:
+            flush_para(); close_list()
+            level = min(len(m.group(1)) + 1, 4)  # '#' in a post becomes h2
+            out.append(f"<h{level}>{inline_md(m.group(2))}</h{level}>")
+            continue
+        if re.match(r"^(-{3,}|\*{3,})$", stripped):
+            flush_para(); close_list(); out.append("<hr />")
+            continue
+        vid = youtube_id(stripped) if re.match(r"^https?://\S+$", stripped) else None
+        if vid:
+            flush_para(); close_list()
+            out.append(youtube_embed(vid))
+            continue
+        m = re.match(r"^!\[([^\]]*)\]\(([^)\s]+)\)$", stripped)
+        if m:
+            flush_para(); close_list()
+            out.append(
+                f'<figure><img src="{escape(m.group(2))}" alt="{escape(m.group(1))}" loading="lazy" />'
+                + (f"<figcaption>{inline_md(m.group(1))}</figcaption>" if m.group(1) else "")
+                + "</figure>"
+            )
+            continue
+        m = re.match(r"^([-*]|\d+[.)])\s+(.*)$", stripped)
+        if m:
+            flush_para()
+            kind = "ul" if m.group(1) in "-*" else "ol"
+            if list_type != kind:
+                close_list(); out.append(f"<{kind}>"); list_type = kind
+            out.append(f"<li>{inline_md(m.group(2))}</li>")
+            continue
+        if stripped.startswith(">"):
+            flush_para(); close_list()
+            out.append(f"<blockquote><p>{inline_md(stripped.lstrip('> '))}</p></blockquote>")
+            continue
+        close_list()
+        para.append(stripped)
+
+    flush_para(); close_list()
+    return "\n".join(out)
 
 
-def apply_item_bindings(fragment: str, item: dict) -> str:
-    def replace_item_text(match: re.Match) -> str:
-        tag, before, field, after = match.groups()
-        value = item.get(field)
-        if value is None:
-            return match.group(0)
-        return f"<{tag}{before}{after}>{escape(str(value))}</{tag}>"
+# ------------------------------------------------------------------- posts --
 
-    fragment = re.sub(
-        r"<(\w+)([^>]*?)\sdata-content-item=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_item_text,
-        fragment,
+def read_post(path: Path) -> dict:
+    raw = path.read_text(encoding="utf-8")
+    meta: dict[str, str] = {}
+    body = raw
+    m = re.match(r"^---\n(.*?)\n---\n(.*)$", raw, re.S)
+    if m:
+        for line in m.group(1).splitlines():
+            if ":" in line:
+                k, v = line.split(":", 1)
+                meta[k.strip()] = v.strip().strip('"')
+        body = m.group(2)
+    slug = re.sub(r"^\d{4}-\d{2}-\d{2}-", "", path.stem)
+    d = date.fromisoformat(meta.get("date") or path.stem[:10])
+    return {
+        "slug": slug,
+        "title": meta.get("title", slug.replace("-", " ").title()),
+        "date": d,
+        "date_label": f"{d:%B} {d.day}, {d.year}",
+        "summary": meta.get("summary", ""),
+        "html": markdown_to_html(body),
+        "file": path.name,
+    }
+
+
+def load_posts() -> list[dict]:
+    posts = [read_post(p) for p in sorted(POSTS.glob("*.md"))]
+    posts.sort(key=lambda p: (p["date"], p["file"]), reverse=True)
+    return posts
+
+
+# ----------------------------------------------------------------- helpers --
+
+def youtube_id(url: str) -> str | None:
+    u = urlparse(url.strip())
+    host = (u.hostname or "").replace("www.", "").replace("m.", "")
+    if host == "youtu.be":
+        return u.path.strip("/").split("/")[0] or None
+    if host.endswith("youtube.com"):
+        if u.path == "/watch":
+            return parse_qs(u.query).get("v", [None])[0]
+        parts = u.path.strip("/").split("/")
+        if len(parts) >= 2 and parts[0] in ("embed", "shorts", "live"):
+            return parts[1]
+    return None
+
+
+def youtube_embed(vid: str, title: str = "YouTube video") -> str:
+    return (
+        f'<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/{escape(vid)}" '
+        f'title="{escape(title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; '
+        f'gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>'
     )
 
-    def replace_item_html(match: re.Match) -> str:
-        tag, before, field, after = match.groups()
-        value = item.get(field)
-        if value is None:
-            return match.group(0)
-        return f"<{tag}{before}{after}>{value}</{tag}>"
 
-    fragment = re.sub(
-        r"<(\w+)([^>]*?)\sdata-content-item-html=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_item_html,
-        fragment,
+def mailto(email: str, subject: str = "", body: str = "") -> str:
+    q = []
+    if subject:
+        q.append("subject=" + quote(subject))
+    if body:
+        q.append("body=" + quote(body))
+    return f"mailto:{email}" + ("?" + "&".join(q) if q else "")
+
+
+def tpl(name: str) -> Template:
+    return Template((TEMPLATES / name).read_text(encoding="utf-8"))
+
+
+def e(s) -> str:
+    return escape(str(s))
+
+
+# ------------------------------------------------------------------ render --
+
+def render_nav(c: dict) -> str:
+    return "\n".join(
+        f'<li><a class="nav__link" href="{e(l["href"])}">{e(l["label"])}</a></li>' for l in c["nav"]
     )
 
-    def replace_item_attr_void(match: re.Match) -> str:
-        tag, before, spec, after = match.groups()
-        attrs = apply_content_attr(spec, before + after, item)
-        attrs = strip_binding_attrs(attrs)
-        return f"<{tag}{attrs} />"
 
-    fragment = re.sub(
-        r"<(\w+)([^>]*)\sdata-content-item-attr=\"([^\"]+)\"([^>]*)\s*/>",
-        replace_item_attr_void,
-        fragment,
+def render_post_cards(posts: list[dict]) -> str:
+    return "\n".join(
+        f"""<article class="post-card">
+  <a href="/blog/{p['slug']}/">
+    <time datetime="{p['date'].isoformat()}">{e(p['date_label'])}</time>
+    <h3>{e(p['title'])}</h3>
+    <p>{e(p['summary'])}</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>"""
+        for p in posts
     )
 
-    def replace_item_attr_paired(match: re.Match) -> str:
-        tag, before, spec, after, inner = match.groups()
-        attrs = apply_content_attr(spec, before + after, item)
-        attrs = strip_binding_attrs(attrs)
-        return f"<{tag}{attrs}>{inner}</{tag}>"
 
-    fragment = re.sub(
-        r"<(\w+)([^>]*)\sdata-content-item-attr=\"([^\"]+)\"([^>]*)>([\s\S]*?)</\1>",
-        replace_item_attr_paired,
-        fragment,
-    )
-
-    def replace_item_style(match: re.Match) -> str:
-        tag, before, field, after = match.groups()
-        value = item.get(field)
-        if value is None:
-            return match.group(0)
-        clean = strip_binding_attrs(before + after)
-        return f'<{tag}{clean} style="background-image: url(\'{value}\')"></{tag}>'
-
-    fragment = re.sub(
-        r"<(\w+)([^>]*?)\sdata-content-item-style=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_item_style,
-        fragment,
-    )
-
-    def remove_if_false(match: re.Match) -> str:
-        field = match.group(1)
-        return "" if not item.get(field) else match.group(0)
-
-    fragment = re.sub(
-        r"<[^>]+data-content-item-if=\"([^\"]+)\"[^>]*>[\s\S]*?</[^>]+>",
-        remove_if_false,
-        fragment,
-    )
-
-    return fragment
-
-
-def render_lists(html: str, data: dict) -> str:
-    list_pattern = re.compile(
-        r"<(\w+)([^>]*?)\sdata-content-list=\"([^\"]+)\"\s+data-content-template=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        re.DOTALL,
-    )
-
-    def replace_list(match: re.Match) -> str:
-        tag, before, list_path, template_id, after = match.groups()
-        items = get_by_path(data, list_path)
-        template_match = re.search(
-            rf"<template id=\"{re.escape(template_id)}\">([\s\S]*?)</template>",
-            html,
+def render_videos(c: dict, videos: list[dict]) -> str:
+    items = []
+    for v in videos:
+        vid = youtube_id(v.get("youtube", ""))
+        if not vid:
+            print(f"  ! videos.json: skipped, not a YouTube link: {v.get('youtube')!r}")
+            continue
+        title = v.get("title", "")
+        items.append(
+            f'<figure class="video-item">{youtube_embed(vid, title or "YouTube video")}'
+            + (f"<figcaption>{e(title)}</figcaption>" if title else "")
+            + "</figure>"
         )
-        if not template_match or not isinstance(items, list):
-            return match.group(0)
-
-        rendered = []
-        for item in items:
-            chunk = apply_item_bindings(template_match.group(1).strip(), item)
-            rendered.append(chunk)
-
-        clean = strip_binding_attrs(before + after)
-        return f"<{tag}{clean}>{''.join(rendered)}</{tag}>"
-
-    return list_pattern.sub(replace_list, html)
+    if not items:
+        return f'<p class="section__lede">{e(c["watch"]["emptyText"])}</p>'
+    return f'<div class="videos">{"".join(items)}</div>'
 
 
-def apply_scalar_bindings(html: str, data: dict) -> str:
-    def replace_text(match: re.Match) -> str:
-        tag, before, path, after = match.groups()
-        value = get_by_path(data, path)
-        if value is None:
-            return match.group(0)
-        clean = strip_binding_attrs(before + after)
-        return f"<{tag}{clean}>{escape(str(value))}</{tag}>"
+def build():
+    c = json.loads((ROOT / "content.json").read_text(encoding="utf-8"))
+    videos = json.loads((ROOT / "videos.json").read_text(encoding="utf-8")).get("videos", [])
+    posts = load_posts()
+    site = c["site"]
+    year = date.today().year
+    booking = site.get("bookingUrl", "").strip()
+    book_href = booking or mailto(site["email"], site["bookingSubject"])
+    rollout_href = booking or mailto(site["email"], "Early rollout of Isora")
+    book_target = ' target="_blank" rel="noopener"' if booking else ""
 
-    html = re.sub(
-        r"<(\w+)([^>]*?)\sdata-content=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_text,
-        html,
-    )
+    common = {
+        "site_name": e(site["name"]),
+        "nav": render_nav(c),
+        "email": e(site["email"]),
+        "email_href": e(mailto(site["email"])),
+        "book_href": e(book_href),
+        "book_target": book_target,
+        "copyright": e(site["copyright"]),
+        "year": str(year),
+        "description": e(site["description"]),
+    }
+    base = tpl("base.html")
 
-    def replace_html(match: re.Match) -> str:
-        tag, before, path, after = match.groups()
-        value = get_by_path(data, path)
-        if value is None:
-            return match.group(0)
-        clean = strip_binding_attrs(before + after)
-        return f"<{tag}{clean}>{value}</{tag}>"
-
-    html = re.sub(
-        r"<(\w+)([^>]*?)\sdata-content-html=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_html,
-        html,
-    )
-
-    def replace_attr_void(match: re.Match) -> str:
-        tag, before, spec, after = match.groups()
-        attrs = apply_content_attr(spec, before + after, data)
-        attrs = strip_binding_attrs(attrs)
-        return f"<{tag}{attrs} />"
-
-    html = re.sub(
-        r"<(\w+)([^>]*)\sdata-content-attr=\"([^\"]+)\"([^>]*)\s*/>",
-        replace_attr_void,
-        html,
-    )
-
-    def replace_attr_paired(match: re.Match) -> str:
-        tag, before, spec, after = match.groups()
-        attrs = apply_content_attr(spec, before + after, data)
-        attrs = strip_binding_attrs(attrs)
-        return f"<{tag}{attrs}></{tag}>"
-
-    html = re.sub(
-        r"<(\w+)([^>]*)\sdata-content-attr=\"([^\"]+)\"([^>]*)>\s*</\1>",
-        replace_attr_paired,
-        html,
-    )
-
-    def replace_attr_open(match: re.Match) -> str:
-        tag, before, spec, after, inner = match.groups()
-        attrs = apply_content_attr(spec, before + after, data)
-        attrs = strip_binding_attrs(attrs)
-        return f"<{tag}{attrs}>{inner}</{tag}>"
-
-    html = re.sub(
-        r"<(\w+)([^>]*)\sdata-content-attr=\"([^\"]+)\"([^>]*)>([\s\S]+?)</\1>",
-        replace_attr_open,
-        html,
-    )
-
-    return html
-
-
-def apply_site_meta(html: str, data: dict) -> str:
-    title = get_by_path(data, "site.title") or "Studio Isora"
-    description = get_by_path(data, "site.description") or ""
-    og_image = get_by_path(data, "site.ogImage") or ""
-
-    html = re.sub(r"<title>[^<]*</title>", f"<title>{escape(title)}</title>", html)
-
-    html = re.sub(
-        r'(<meta\s+name="description"\s+content=")[^"]*(")',
-        rf"\1{escape(description, quote=True)}\2",
-        html,
-        count=1,
-    )
-
-    html = re.sub(
-        r'(<meta\s+property="og:title"\s+content=")[^"]*(")',
-        rf"\1{escape(title, quote=True)}\2",
-        html,
-        count=1,
-    )
-
-    html = re.sub(
-        r'(<meta\s+property="og:description"\s+content=")[^"]*(")',
-        rf"\1{escape(description, quote=True)}\2",
-        html,
-        count=1,
-    )
-
-    if og_image:
-        html = re.sub(
-            r'(<meta\s+property="og:image"\s+content=")[^"]*(")',
-            rf"\1{escape(og_image, quote=True)}\2",
-            html,
-            count=1,
-        )
-        html = re.sub(
-            r'(<meta\s+name="twitter:image"\s+content=")[^"]*(")',
-            rf"\1{escape(og_image, quote=True)}\2",
-            html,
-            count=1,
+    def page(title: str, description: str, body: str, body_class: str = "") -> str:
+        return base.safe_substitute(
+            common, title=e(title), description=e(description), body=body, body_class=body_class
         )
 
-    html = re.sub(
-        r'(<meta\s+name="twitter:title"\s+content=")[^"]*(")',
-        rf"\1{escape(title, quote=True)}\2",
-        html,
-        count=1,
+    def paras(items):
+        return "".join(f'<p class="section__lede">{e(p)}</p>' for p in items)
+
+    # -- home
+    latest = posts[0] if posts else None
+    status = (
+        f'<a class="status-bar__link" href="/blog/{latest["slug"]}/"><span class="status-bar__label">Latest from the blog</span> {e(latest["title"])} &rarr;</a>'
+        if latest else ""
     )
-
-    html = re.sub(
-        r'(<meta\s+name="twitter:description"\s+content=")[^"]*(")',
-        rf"\1{escape(description, quote=True)}\2",
-        html,
-        count=1,
+    home_body = tpl("home.html").safe_substitute(
+        common,
+        hero_video=e(site["heroVideo"]),
+        hero_eyebrow=e(c["hero"]["eyebrow"]),
+        hero_title=e(c["hero"]["title"]),
+        hero_lede=e(c["hero"]["lede"]),
+        hero_primary=e(c["hero"]["primaryCta"]),
+        hero_secondary=e(c["hero"]["secondaryCta"]),
+        status=status,
+        services_eyebrow=e(c["services"]["eyebrow"]),
+        services_title=e(c["services"]["title"]),
+        services_lede=e(c["services"]["lede"]),
+        services_items="\n".join(
+            f"""<li class="step">
+  <span class="step__num">{e(s['number'])}</span>
+  <div><h3>{e(s['title'])}</h3><p>{e(s['description'])}</p></div>
+</li>"""
+            for s in c["services"]["items"]
+        ),
+        pipeline_eyebrow=e(c["pipeline"]["eyebrow"]),
+        pipeline_title=e(c["pipeline"]["title"]),
+        pipeline_items="\n".join(
+            f"<li><h3>{e(p['title'])}</h3><p>{e(p['description'])}</p></li>" for p in c["pipeline"]["items"]
+        ),
+        tools_eyebrow=e(c["tools"]["eyebrow"]),
+        tools_title=e(c["tools"]["title"]),
+        tools_paragraphs=paras(c["tools"]["paragraphs"]),
+        tools_cta=e(c["tools"]["cta"]),
+        rollout_href=e(rollout_href),
+        watch_eyebrow=e(c["watch"]["eyebrow"]),
+        watch_title=e(c["watch"]["title"]),
+        watch_body=render_videos(c, list(reversed(videos))),
+        blog_eyebrow=e(c["blog"]["eyebrow"]),
+        blog_title=e(c["blog"]["title"]),
+        blog_cards=render_post_cards(posts[:3]),
+        book_eyebrow=e(c["book"]["eyebrow"]),
+        book_title=e(c["book"]["title"]),
+        book_text=e(c["book"]["text"]),
     )
+    pages = {DIST / "index.html": page(site["title"], site["description"], home_body, "home")}
 
-    return html
-
-
-def prepare_production_html(html: str) -> str:
-    html = re.sub(
-        r'\s*<link rel="preload" href="content\.json"[^>]*/>\s*',
-        "\n",
-        html,
+    # -- blog index
+    blog_body = tpl("blog_index.html").safe_substitute(
+        common,
+        blog_eyebrow=e(c["blog"]["eyebrow"]),
+        blog_title=e(c["blog"]["title"]),
+        blog_lede=e(c["blog"]["lede"]),
+        blog_cards=render_post_cards(posts) or '<p class="section__lede">No posts yet.</p>',
     )
-    html = re.sub(
-        r'\s*<script src="content\.js" defer></script>\s*',
-        "\n",
-        html,
-    )
-    html = re.sub(r"\s*<template id=\"tpl-[^\"]+\">[\s\S]*?</template>\s*", "", html)
-    html = re.sub(
-        r'\s*<div id="content-error"[^>]*>[\s\S]*?</div>\s*',
-        "\n",
-        html,
-    )
-    return html
+    pages[DIST / "blog" / "index.html"] = page(f"Blog — {site['name']}", c["blog"]["lede"], blog_body, "inner")
 
+    # -- posts
+    for i, p in enumerate(posts):
+        newer = posts[i - 1] if i > 0 else None
+        older = posts[i + 1] if i + 1 < len(posts) else None
+        pager = "".join([
+            f'<a class="pager__older" href="/blog/{older["slug"]}/">&larr; {e(older["title"])}</a>' if older else "<span></span>",
+            f'<a class="pager__newer" href="/blog/{newer["slug"]}/">{e(newer["title"])} &rarr;</a>' if newer else "<span></span>",
+        ])
+        body = tpl("post.html").safe_substitute(
+            common,
+            post_title=e(p["title"]),
+            post_date=e(p["date_label"]),
+            post_iso=p["date"].isoformat(),
+            post_html=p["html"],
+            pager=pager,
+        )
+        pages[DIST / "blog" / p["slug"] / "index.html"] = page(f"{p['title']} — {site['name']}", p["summary"], body, "inner")
 
-def build() -> None:
-    content = json.loads(SOURCE_CONTENT.read_text(encoding="utf-8"))
-    html = SOURCE_HTML.read_text(encoding="utf-8")
+    # -- write (overwrite in place; remove pages for deleted posts)
+    DIST.mkdir(exist_ok=True)
+    blog_dir = DIST / "blog"
+    if blog_dir.exists():
+        keep = {p["slug"] for p in posts}
+        for d in blog_dir.iterdir():
+            if d.is_dir() and d.name not in keep:
+                try:
+                    shutil.rmtree(d)
+                except OSError as err:
+                    print(f"  ! could not remove old post {d.name}: {err}")
+    for path, html in pages.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(html, encoding="utf-8")
+    for name in STATIC_FILES:
+        shutil.copyfile(ROOT / name, DIST / name)
+    for d in STATIC_DIRS:
+        for src in (ROOT / d).rglob("*"):
+            if src.is_file() and not src.name.startswith("."):
+                dst = DIST / src.relative_to(ROOT)
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                if not dst.exists() or dst.stat().st_size != src.stat().st_size:
+                    shutil.copyfile(src, dst)
 
-    html = render_lists(html, content)
-    html = apply_scalar_bindings(html, content)
-    html = apply_site_meta(html, content)
-    html = strip_binding_attrs(html)
-    html = prepare_production_html(html)
-
-    if DIST.exists():
-        shutil.rmtree(DIST)
-    DIST.mkdir()
-
-    (DIST / "index.html").write_text(html, encoding="utf-8")
-    shutil.copy2(ROOT / "styles.css", DIST / "styles.css")
-    shutil.copy2(ROOT / "script.js", DIST / "script.js")
-
-    assets_src = ROOT / "assets"
-    if assets_src.is_dir():
-        shutil.copytree(assets_src, DIST / "assets")
-        print("  dist/assets/     (video and media files)")
-
-    print(f"Built production site → {DIST}/")
-    print("  dist/index.html  (pre-rendered, no client-side content fetch)")
-    print("  dist/styles.css")
-    print("  dist/script.js")
+    print(f"Built {len(pages)} pages into {DIST.relative_to(ROOT)}/ ({len(posts)} posts)")
 
 
 if __name__ == "__main__":

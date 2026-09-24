@@ -3,241 +3,192 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="Studio Isora: an AI enhanced boutique creative studio crafting cinematic visual experiences."
-  />
-  <meta name="robots" content="index, follow" />
+  <title>Studio Isora — hybrid live-action and AI production studio</title>
+  <meta name="description" content="Studio Isora is a production studio and consultancy for independent filmmakers: from script to post-production, using a hybrid pipeline that anchors AI-generated shots to real locations and real performances." />
   <meta name="theme-color" content="#050505" />
-
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Studio Isora" />
-  <meta property="og:title" content="Studio Isora, a Cinematic Creative Studio" />
-  <meta
-    property="og:description"
-    content="Studio Isora: an AI enhanced boutique creative studio crafting cinematic visual experiences."
-  />
-  <meta
-    property="og:image"
-    content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"
-  />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Studio Isora, a Cinematic Creative Studio" />
-  <meta
-    name="twitter:description"
-    content="Studio Isora: an AI enhanced boutique creative studio crafting cinematic visual experiences."
-  />
-  <meta
-    name="twitter:image"
-    content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&amp;fit=crop&amp;w=1200&amp;q=80"
-  />
-
-  <title>Studio Isora, a Cinematic Creative Studio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
+  <meta property="og:title" content="Studio Isora — hybrid live-action and AI production studio" />
+  <meta property="og:description" content="Studio Isora is a production studio and consultancy for independent filmmakers: from script to post-production, using a hybrid pipeline that anchors AI-generated shots to real locations and real performances." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
-  <!-- =========== HERO =========== -->
+<body class="home">
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="brand" aria-label="Studio Isora — home">
+      <span class="brand__mark">◣</span>
+      <span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span>
+    </a>
+    <ul class="nav__list" id="navList">
+<li><a class="nav__link" href="/#services">SERVICES</a></li>
+<li><a class="nav__link" href="/#pipeline">PIPELINE</a></li>
+<li><a class="nav__link" href="/#watch">WATCH</a></li>
+<li><a class="nav__link" href="/blog/">BLOG</a></li>
+<li><a class="nav__link" href="/#book">BOOK A CALL</a></li>
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
   <header class="hero" id="home">
-    <video
-      class="hero__video-bg"
-      autoplay
-      loop
-      muted
-      playsinline
-      aria-hidden="true"
-     
-     src="./assets/Ground_explosions_chasing_camera_202606301751.mp4" poster="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&amp;fit=crop&amp;w=2000&amp;q=80"></video>
+    <video class="hero__video-bg" autoplay loop muted playsinline aria-hidden="true" src="/assets/Ground_explosions_chasing_camera_202606301751.mp4"></video>
     <div class="hero__overlay" aria-hidden="true"></div>
-
-    <nav class="nav" aria-label="Primary">
-      <a href="#home" class="brand" aria-label="Studio Isora — home">
-        <span class="brand__mark">◣</span>
-        <span class="brand__name">
-          <span>STUDIO</span><span class="brand__accent">ISORA</span>
-        </span>
-      </a>
-
-      <ul
-        class="nav__list"
-        id="navList"
-       
-      ><li>
-      <a class="nav__link" href="#home">
-        <span class="nav__bullet"></span>
-        <span>HOME</span>
-      </a>
-    </li><li>
-      <a class="nav__link" href="#about">
-        
-        <span>ABOUT US</span>
-      </a>
-    </li><li>
-      <a class="nav__link" href="#portfolio">
-        
-        <span>PORTFOLIO</span>
-      </a>
-    </li><li>
-      <a class="nav__link" href="#subscription">
-        
-        <span>SUBSCRIPTION</span>
-      </a>
-    </li><li>
-      <a class="nav__link" href="#services">
-        
-        <span>SERVICES</span>
-      </a>
-    </li><li>
-      <a class="nav__link" href="#contact">
-        
-        <span>CONTACT</span>
-      </a>
-    </li></ul>
-
-      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-
-    <div class="hero__content">
-      <h1 class="hero__tagline">BOUTIQUE VISUAL EFFECTS STUDIO</h1>
-    </div>
-
-    <div class="hero__credits">
-      <div class="credits__inner">
-        <span class="credits__label">FEATURED WORK</span>
-        <div class="credits__card">
-          <div class="credits__thumb" aria-hidden="true"></div>
-          <div class="credits__text">
-            <span class="credits__title">Northern Lights</span>
-            <span class="credits__sub">Feature film · 2026</span>
-          </div>
-        </div>
+    <div class="hero__content container">
+      <p class="eyebrow">Hybrid production studio</p>
+      <h1 class="hero__title">From script to screen, with a hybrid live-action and AI pipeline.</h1>
+      <p class="hero__lede">Studio Isora works alongside independent filmmakers through every stage of production.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="mailto:info@studioisora.com?subject=Consultation%20request">Book a consultation</a>
+        <a class="btn btn--ghost" href="/blog/">Follow the process</a>
       </div>
     </div>
+    <div class="status-bar"><a class="status-bar__link" href="/blog/test-00-scan-to-keyframe/"><span class="status-bar__label">Latest from the blog</span> Test 00: from a rough scan to a usable keyframe &rarr;</a></div>
   </header>
 
   <main id="main">
-<!-- =========== ABOUT =========== -->
-    <section class="section section--dark" id="about">
-      <div class="container grid-2">
-        <div>
-          <p class="eyebrow">About Studio Isora</p>
-          <h2 class="section__title">An AI enhanced platform for visual effects and creative production.</h2>
-        </div>
-        <p class="section__lede">Studio Isora is a cost effective hybrid tool blending the power of AI with the traditional live action production workdflow for early-career professionals, emerging directors, designers, and visual effects artists.</p>
-      </div>
-    </section>
-
-    <!-- =========== PORTFOLIO =========== -->
-    <section class="section" id="portfolio">
-      <div class="container">
-        <div class="section__head">
-          <p class="eyebrow">Selected Work</p>
-          <h2 class="section__title">Portfolio</h2>
-        </div>
-        <div
-          class="portfolio"
-         
-        ><article class="card">
-      <div class="card__media" style="background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80')"></div>
-      <div class="card__body">
-        <span class="card__tag">VFX · Color</span>
-        <h3 class="card__title">Northern Lights</h3>
-      </div>
-    </article><article class="card">
-      <div class="card__media" style="background-image: url('https://images.unsplash.com/photo-1518929458119-e5bf444c30f4?auto=format&fit=crop&w=1200&q=80')"></div>
-      <div class="card__body">
-        <span class="card__tag">Direction</span>
-        <h3 class="card__title">Quiet Hours</h3>
-      </div>
-    </article><article class="card">
-      <div class="card__media" style="background-image: url('https://images.unsplash.com/photo-1500920429664-1c7e26469ce9?auto=format&fit=crop&w=1200&q=80')"></div>
-      <div class="card__body">
-        <span class="card__tag">Brand Film</span>
-        <h3 class="card__title">Atelier — SS26</h3>
-      </div>
-    </article><article class="card">
-      <div class="card__media" style="background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80')"></div>
-      <div class="card__body">
-        <span class="card__tag">CG · Compositing</span>
-        <h3 class="card__title">Vessel</h3>
-      </div>
-    </article></div>
-      </div>
-    </section>
-
-    <!-- =========== SERVICES =========== -->
     <section class="section section--dark" id="services">
       <div class="container">
         <div class="section__head">
-          <p class="eyebrow">Capabilities</p>
-          <h2 class="section__title">Services</h2>
+          <p class="eyebrow">Services</p>
+          <h2 class="section__title">Full production consultancy, script to post.</h2>
+          <p class="section__lede">Bring us a script or an idea. We plan the hybrid approach with you, help you capture what needs to be real, and finish the rest in our pipeline.</p>
         </div>
-        <ul
-          class="services"
-         
-        ><li>
-      <span>01</span>
-      <h3>Visual Effects</h3>
-      <p>Concept through final composite, on shows of any scale.</p>
-    </li><li>
-      <span>02</span>
-      <h3>Direction &amp; Production</h3>
-      <p>End-to-end production for brand films and short-form.</p>
-    </li><li>
-      <span>03</span>
-      <h3>Color &amp; Finishing</h3>
-      <p>Grading, online, and delivery in a calibrated suite.</p>
-    </li><li>
-      <span>04</span>
-      <h3>Design &amp; Motion</h3>
-      <p>Title sequences, graphics packages, and brand systems.</p>
-    </li></ul>
+        <ol class="steps">
+<li class="step">
+  <span class="step__num">01</span>
+  <div><h3>Script &amp; breakdown</h3><p>We break your script into shots and decide, shot by shot, what to film live, what to extend from a real take, and what to generate.</p></div>
+</li>
+<li class="step">
+  <span class="step__num">02</span>
+  <div><h3>Pre-production</h3><p>Shot lists, storyboards and a production plan built around the hybrid split, so budget goes where the performance is.</p></div>
+</li>
+<li class="step">
+  <span class="step__num">03</span>
+  <div><h3>Location capture</h3><p>We plan and supervise the capture of your real locations: 3D scans, reference photography, plates, and the facts of the day like sun position and lensing.</p></div>
+</li>
+<li class="step">
+  <span class="step__num">04</span>
+  <div><h3>Production support</h3><p>On-set guidance for the takes the pipeline depends on, so the footage you shoot can carry the shots you don&#x27;t.</p></div>
+</li>
+<li class="step">
+  <span class="step__num">05</span>
+  <div><h3>Generation &amp; post</h3><p>Keyframes and generated coverage built from your own footage and locations, conformed to match, and delivered to your edit.</p></div>
+</li>
+<li class="step">
+  <span class="step__num">06</span>
+  <div><h3>Delivery</h3><p>Real and generated clips handed off side by side, clearly labelled, with a record of how every generated shot was made.</p></div>
+</li>
+        </ol>
       </div>
     </section>
 
-    <!-- =========== SUBSCRIPTION =========== -->
-    <section class="section" id="subscription">
+    <section class="section" id="pipeline">
       <div class="container grid-2">
         <div>
-          <p class="eyebrow">Subscription</p>
-          <h2 class="section__title">Try it out for yourself</h2>
+          <p class="eyebrow">Our pipeline</p>
+          <h2 class="section__title">Every shot starts somewhere real.</h2>
         </div>
-        <p class="section__lede"> Subscribe to our platform and get access to our tools and resources. 
- <a href="mailto:subscription@studioisora.com">subscription@studioisora.com</a>.</p>
+        <ul class="principles">
+<li><h3>Performances stay real</h3><p>Actors are filmed, not synthesised from a prompt. Generation extends real takes rather than inventing performances.</p></li>
+<li><h3>Anchored to real places</h3><p>Every generated shot starts from material captured at your actual location, so the world on screen is the one you chose.</p></li>
+<li><h3>Your footage stays yours</h3><p>Projects live on our own machines, not on a third-party platform. Only the reference frames a shot needs are sent to a model.</p></li>
+<li><h3>Transparent generation costs</h3><p>Model usage is estimated before anything is generated, so there are no surprises on the budget.</p></li>
+<li><h3>Every shot is accounted for</h3><p>Model, prompt, references and cost are recorded for each generated clip, so you always know what was shot and what was made.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="tools">
+      <div class="container grid-2">
+        <div>
+          <p class="eyebrow">Our tools</p>
+          <h2 class="section__title">Built on our own software.</h2>
+        </div>
+        <div class="stack">
+<p class="section__lede">Behind the studio is Isora, the software we&#x27;re building to run this pipeline: script breakdown, shot planning, location capture, storyboarding and generation in one place.</p><p class="section__lede">For now it&#x27;s used in-house, on our productions and under our supervision. If you&#x27;d like to be part of its early rollout, book a call and we&#x27;ll walk you through it.</p>
+          <div><a class="btn btn--ghost" href="mailto:info@studioisora.com?subject=Early%20rollout%20of%20Isora">Ask about early rollout</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="watch">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Watch the process</p>
+          <h2 class="section__title">The workflow, on video.</h2>
+        </div>
+<p class="section__lede">We&#x27;re documenting the pipeline step by step on YouTube, from location capture to finished shots. The first episodes are on the way.</p>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="blog">
+      <div class="container">
+        <div class="section__head section__head--row">
+          <div>
+            <p class="eyebrow">Development blog</p>
+            <h2 class="section__title">How the pipeline gets built.</h2>
+          </div>
+          <a class="link-arrow" href="/blog/">All posts &rarr;</a>
+        </div>
+        <div class="post-grid">
+<article class="post-card">
+  <a href="/blog/test-00-scan-to-keyframe/">
+    <time datetime="2026-09-23">September 23, 2026</time>
+    <h3>Test 00: from a rough scan to a usable keyframe</h3>
+    <p>Our first bench test took a phone scan of a bedroom, framed shots in it, and restored those renders into photographic keyframes on a laptop. Reference photos cut the hallucinations, with one important catch.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+<article class="post-card">
+  <a href="/blog/capture-the-real-location/">
+    <time datetime="2026-09-22">September 22, 2026</time>
+    <h3>Capture the real location</h3>
+    <p>We tried to source locations from splat libraries and stock drone footage. None of it matched the storyboard. So our pipeline now starts with planning our own capture.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+<article class="post-card">
+  <a href="/blog/why-our-pipeline-runs-locally/">
+    <time datetime="2026-09-16">September 16, 2026</time>
+    <h3>Why our pipeline runs locally</h3>
+    <p>The first design for our production tools was a cloud platform. We threw it out on day one. Here&#x27;s why a local-first pipeline is the right shape for hybrid filmmaking.</p>
+    <span class="post-card__more">Read post &rarr;</span>
+  </a>
+</article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta" id="book">
+      <div class="container cta__inner">
+        <p class="eyebrow">Book a consultation</p>
+        <h2 class="section__title">Tell us what you&#x27;re making.</h2>
+        <p class="section__lede">Consultations are by appointment. Tell us about your project, where it is now, and what you need, and we&#x27;ll set up a call. The same goes if you&#x27;re interested in the early rollout of our tools.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="mailto:info@studioisora.com?subject=Consultation%20request">Book a consultation</a>
+          <a class="mailto" href="mailto:info@studioisora.com">info@studioisora.com</a>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- =========== CONTACT =========== -->
-  <footer class="section section--dark footer" id="contact">
+
+  <footer class="footer">
     <div class="container footer__grid">
       <div>
-        <p class="eyebrow">Get in touch</p>
-        <h2 class="section__title">Let&#x27;s make something.</h2>
-        <a
-          class="mailto"
-         
-         
-        >hello@studioisora.com</a>
+        <a href="/" class="brand"><span class="brand__mark">◣</span><span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span></a>
+        <p class="muted footer__tag">Hybrid live-action and AI production studio for independent filmmakers.</p>
       </div>
       <div class="footer__meta">
-        <p>Studio Isora</p>
-        <p>522 W Riverside Ave Ste N<br />Spokane, WA 99201</p>
-        <p class="muted">&copy; <span id="year"></span> <span>Studio Isora. All rights reserved.</span></p>
+        <a class="footer__mail" href="mailto:info@studioisora.com">info@studioisora.com</a>
+        <p class="muted">&copy; 2026 Isora LLC. All rights reserved.</p>
       </div>
     </div>
   </footer>
-
-  <!-- Content list templates --><script src="script.js" defer></script>
+  <script src="/script.js" defer></script>
 </body>
 </html>

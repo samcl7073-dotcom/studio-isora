@@ -1,110 +1,74 @@
 {
   "site": {
-    "title": "Studio Isora, a Cinematic Creative Studio",
-    "description": "Studio Isora: an AI enhanced boutique creative studio crafting cinematic visual experiences.",
-    "ogImage": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80"
+    "name": "Studio Isora",
+    "title": "Studio Isora — hybrid live-action and AI production studio",
+    "description": "Studio Isora is a production studio and consultancy for independent filmmakers: from script to post-production, using a hybrid pipeline that anchors AI-generated shots to real locations and real performances.",
+    "email": "info@studioisora.com",
+    "bookingUrl": "",
+    "bookingSubject": "Consultation request",
+    "copyright": "Isora LLC. All rights reserved.",
+    "heroVideo": "/assets/Ground_explosions_chasing_camera_202606301751.mp4"
   },
-  "homepage": {
-    "navigation": {
-      "brand": {
-        "mark": "◣",
-        "namePrimary": "STUDIO",
-        "nameAccent": "ISORA",
-        "ariaLabel": "Studio Isora — home"
-      },
-      "links": [
-        { "href": "#home", "label": "HOME", "showBullet": true },
-        { "href": "#about", "label": "ABOUT US", "showBullet": false },
-        { "href": "#portfolio", "label": "PORTFOLIO", "showBullet": false },
-        { "href": "#subscription", "label": "SUBSCRIPTION", "showBullet": false },
-        { "href": "#services", "label": "SERVICES", "showBullet": false },
-        { "href": "#contact", "label": "CONTACT", "showBullet": false }
-      ]
-    },
-    "hero": {
-      "videoSrc": "./assets/Ground_explosions_chasing_camera_202606301751.mp4",
-      "media": {
-        "poster": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=2000&q=80"
-      },
-      "tagline": "BOUTIQUE VISUAL EFFECTS STUDIO",
-      "credits": {
-        "label": "FEATURED WORK",
-        "featured": {
-          "title": "Northern Lights",
-          "subtitle": "Feature film · 2026"
-        }
-      }
-    },
-    "about": {
-      "eyebrow": "About Studio Isora",
-      "title": "An AI enhanced platform for visual effects and creative production.",
-      "bodyText": "Studio Isora is a cost effective hybrid tool blending the power of AI with the traditional live action production workdflow for early-career professionals, emerging directors, designers, and visual effects artists."
-    },
-    "portfolio": {
-      "eyebrow": "Selected Work",
-      "title": "Portfolio",
-      "items": [
-        {
-          "tag": "VFX · Color",
-          "title": "Northern Lights",
-          "image": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=80"
-        },
-        {
-          "tag": "Direction",
-          "title": "Quiet Hours",
-          "image": "https://images.unsplash.com/photo-1518929458119-e5bf444c30f4?auto=format&fit=crop&w=1200&q=80"
-        },
-        {
-          "tag": "Brand Film",
-          "title": "Atelier — SS26",
-          "image": "https://images.unsplash.com/photo-1500920429664-1c7e26469ce9?auto=format&fit=crop&w=1200&q=80"
-        },
-        {
-          "tag": "CG · Compositing",
-          "title": "Vessel",
-          "image": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80"
-        }
-      ]
-    },
-    "services": {
-      "eyebrow": "Capabilities",
-      "title": "Services",
-      "items": [
-        {
-          "number": "01",
-          "title": "Visual Effects",
-          "description": "Concept through final composite, on shows of any scale."
-        },
-        {
-          "number": "02",
-          "title": "Direction & Production",
-          "description": "End-to-end production for brand films and short-form."
-        },
-        {
-          "number": "03",
-          "title": "Color & Finishing",
-          "description": "Grading, online, and delivery in a calibrated suite."
-        },
-        {
-          "number": "04",
-          "title": "Design & Motion",
-          "description": "Title sequences, graphics packages, and brand systems."
-        }
-      ]
-    },
-    "subscription": {
-      "eyebrow": "Subscription",
-      "title": "Try it out for yourself",
-      "bodyHtml": " Subscribe to our platform and get access to our tools and resources. \n <a href=\"mailto:subscription@studioisora.com\">subscription@studioisora.com</a>."
-    },
-    "contact": {
-      "eyebrow": "Get in touch",
-      "title": "Let's make something.",
-      "email": "hello@studioisora.com",
-      "emailHref": "mailto:hello@studioisora.com",
-      "studioName": "Studio Isora",
-      "addressHtml": "522 W Riverside Ave Ste N<br />Spokane, WA 99201",
-      "copyright": "Studio Isora. All rights reserved."
-    }
+  "nav": [
+    { "href": "/#services", "label": "SERVICES" },
+    { "href": "/#pipeline", "label": "PIPELINE" },
+    { "href": "/#watch", "label": "WATCH" },
+    { "href": "/blog/", "label": "BLOG" },
+    { "href": "/#book", "label": "BOOK A CALL" }
+  ],
+  "hero": {
+    "eyebrow": "Hybrid production studio",
+    "title": "From script to screen, with a hybrid live-action and AI pipeline.",
+    "lede": "Studio Isora works alongside independent filmmakers through every stage of production.",
+    "primaryCta": "Book a consultation",
+    "secondaryCta": "Follow the process"
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Full production consultancy, script to post.",
+    "lede": "Bring us a script or an idea. We plan the hybrid approach with you, help you capture what needs to be real, and finish the rest in our pipeline.",
+    "items": [
+      { "number": "01", "title": "Script & breakdown", "description": "We break your script into shots and decide, shot by shot, what to film live, what to extend from a real take, and what to generate." },
+      { "number": "02", "title": "Pre-production", "description": "Shot lists, storyboards and a production plan built around the hybrid split, so budget goes where the performance is." },
+      { "number": "03", "title": "Location capture", "description": "We plan and supervise the capture of your real locations: 3D scans, reference photography, plates, and the facts of the day like sun position and lensing." },
+      { "number": "04", "title": "Production support", "description": "On-set guidance for the takes the pipeline depends on, so the footage you shoot can carry the shots you don't." },
+      { "number": "05", "title": "Generation & post", "description": "Keyframes and generated coverage built from your own footage and locations, conformed to match, and delivered to your edit." },
+      { "number": "06", "title": "Delivery", "description": "Real and generated clips handed off side by side, clearly labelled, with a record of how every generated shot was made." }
+    ]
+  },
+  "pipeline": {
+    "eyebrow": "Our pipeline",
+    "title": "Every shot starts somewhere real.",
+    "items": [
+      { "title": "Performances stay real", "description": "Actors are filmed, not synthesised from a prompt. Generation extends real takes rather than inventing performances." },
+      { "title": "Anchored to real places", "description": "Every generated shot starts from material captured at your actual location, so the world on screen is the one you chose." },
+      { "title": "Your footage stays yours", "description": "Projects live on our own machines, not on a third-party platform. Only the reference frames a shot needs are sent to a model." },
+      { "title": "Transparent generation costs", "description": "Model usage is estimated before anything is generated, so there are no surprises on the budget." },
+      { "title": "Every shot is accounted for", "description": "Model, prompt, references and cost are recorded for each generated clip, so you always know what was shot and what was made." }
+    ]
+  },
+  "tools": {
+    "eyebrow": "Our tools",
+    "title": "Built on our own software.",
+    "paragraphs": [
+      "Behind the studio is Isora, the software we're building to run this pipeline: script breakdown, shot planning, location capture, storyboarding and generation in one place.",
+      "For now it's used in-house, on our productions and under our supervision. If you'd like to be part of its early rollout, book a call and we'll walk you through it."
+    ],
+    "cta": "Ask about early rollout"
+  },
+  "watch": {
+    "eyebrow": "Watch the process",
+    "title": "The workflow, on video.",
+    "emptyText": "We're documenting the pipeline step by step on YouTube, from location capture to finished shots. The first episodes are on the way."
+  },
+  "blog": {
+    "eyebrow": "Development blog",
+    "title": "How the pipeline gets built.",
+    "lede": "Tests, decisions and findings from building our hybrid production workflow, written up as we go."
+  },
+  "book": {
+    "eyebrow": "Book a consultation",
+    "title": "Tell us what you're making.",
+    "text": "Consultations are by appointment. Tell us about your project, where it is now, and what you need, and we'll set up a call. The same goes if you're interested in the early rollout of our tools."
   }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why our pipeline runs locally — Studio Isora</title>
+  <meta name="description" content="The first design for our production tools was a cloud platform. We threw it out on day one. Here&#x27;s why a local-first pipeline is the right shape for hybrid filmmaking." />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Studio Isora" />
+  <meta property="og:title" content="Why our pipeline runs locally — Studio Isora" />
+  <meta property="og:description" content="The first design for our production tools was a cloud platform. We threw it out on day one. Here&#x27;s why a local-first pipeline is the right shape for hybrid filmmaking." />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="inner">
+  <nav class="nav" aria-label="Primary">
+    <a href="/" class="brand" aria-label="Studio Isora — home">
+      <span class="brand__mark">◣</span>
+      <span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span>
+    </a>
+    <ul class="nav__list" id="navList">
+<li><a class="nav__link" href="/#services">SERVICES</a></li>
+<li><a class="nav__link" href="/#pipeline">PIPELINE</a></li>
+<li><a class="nav__link" href="/#watch">WATCH</a></li>
+<li><a class="nav__link" href="/blog/">BLOG</a></li>
+<li><a class="nav__link" href="/#book">BOOK A CALL</a></li>
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main id="main" class="page">
+    <article class="section post">
+      <div class="container container--narrow">
+        <a class="link-arrow post__back" href="/blog/">&larr; All posts</a>
+        <header class="post__header">
+          <time class="eyebrow" datetime="2026-09-16">September 16, 2026</time>
+          <h1 class="post__title">Why our pipeline runs locally</h1>
+        </header>
+        <div class="prose">
+<p>The first architecture for Isora, the software behind the studio, was a cloud platform: upload footage and location scans, let a server enrich them with AI-generated context about the place, then query that context whenever a shot is generated. It looked good on a whiteboard. It lasted about fifteen minutes once we did the math.</p>
+<h3>Footage is heavy</h3>
+<p>Professional footage runs close to a gigabyte a minute. A cloud pipeline has to upload it, store it and stream it back, on every project. That cost lands on the production, and it buys nothing the film needs.</p>
+<p>The only part of this workflow that genuinely needs the cloud is the video model itself. Everything else, from breaking down the script to organising takes to building keyframes, runs well on a laptop. So our pipeline runs locally. A project is an ordinary folder on our machines, and nothing leaves them except the few reference frames a given shot needs to send to a model.</p>
+<h3>Pay for what's generated, nothing else</h3>
+<p>Video models change fast, and so do their prices. Our tools treat each model provider as an interchangeable part, so we can pick the right one for each shot, and they estimate what a generation will cost before it runs. Clients see generation costs up front instead of discovering them later.</p>
+<h3>Facts beat guesses</h3>
+<p>The cloud design also had an AI "context layer" that would guess things about a location: plant species, how the trees look in another season, likely weather. We cut it. A few well-chosen photos of the real place anchor a generation better than any description, and the facts that do matter are cheap and exact: coordinates, where the sun is at call time, which camera and lens were used, and what the weather was on the day. None of that needs a language model.</p>
+<h3>What that means on a production</h3>
+<ul>
+<li>Your footage stays with the production, not on someone else's platform.</li>
+<li>Every generated clip records its model, prompt, references, seed and cost, so the edit always knows what was shot and what was made.</li>
+<li>The finished work goes into a normal edit. Our tools hand off to Final Cut Pro; they don't try to replace it.</li>
+</ul>
+<p>It's a smaller system than the cloud version. It's also one an independent production can afford.</p>
+        </div>
+        <aside class="post__cta">
+          <p>Planning a hybrid production?</p>
+          <a class="btn btn--primary" href="mailto:info@studioisora.com?subject=Consultation%20request">Book a consultation</a>
+        </aside>
+        <nav class="pager" aria-label="More posts"><span></span><a class="pager__newer" href="/blog/capture-the-real-location/">Capture the real location &rarr;</a></nav>
+      </div>
+    </article>
+  </main>
+
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="/" class="brand"><span class="brand__mark">◣</span><span class="brand__name">STUDIO<span class="brand__accent">ISORA</span></span></a>
+        <p class="muted footer__tag">Hybrid live-action and AI production studio for independent filmmakers.</p>
+      </div>
+      <div class="footer__meta">
+        <a class="footer__mail" href="mailto:info@studioisora.com">info@studioisora.com</a>
+        <p class="muted">&copy; 2026 Isora LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+</body>
+</html>

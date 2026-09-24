@@ -7,3 +7,7 @@
 # Editor
 .vscode/
 .idea/
+
+# Old files parked for deletion
+_to_delete/
+__pycache__/
