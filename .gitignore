@@ -1,5 +1,5 @@
 # Build output (regenerate with: python3 build.py)
-dist/
+# dist/ is committed: DigitalOcean serves it directly.
 
 # macOS
 .DS_Store
