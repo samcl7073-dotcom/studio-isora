@@ -7,7 +7,7 @@
     "bookingUrl": "",
     "bookingSubject": "Consultation request",
     "copyright": "Isora LLC. All rights reserved.",
-    "heroVideo": "/assets/Ground_explosions_chasing_camera_202606301751.mp4"
+    "heroVideo": "/assets/hero.mp4"
   },
   "nav": [
     { "href": "/#services", "label": "SERVICES" },
